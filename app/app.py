@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fhir.resources.patient import Patient
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
@@ -7,7 +8,20 @@ import os
 
 app = FastAPI()
 
-# MongoDB Atlas URL (Render guarda esto como variable de entorno)
+# Configuración CORS: permite solicitudes solo desde tu frontend
+origins = [
+    "https://crear-solicitud-frontend.onrender.com"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,        # Orígenes permitidos
+    allow_credentials=True,
+    allow_methods=["*"],          # Permite todos los métodos (GET, POST, etc.)
+    allow_headers=["*"],          # Permite todos los headers
+)
+
+# Conexión a MongoDB Atlas
 MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI, server_api=ServerApi('1'))
 db = client["RIS-FINAL"]
@@ -49,6 +63,11 @@ def get_patient_by_identifier(system: str, value: str):
             }
         })
         if not patient:
+            raise HTTPException(status_code=404, detail="Patient not found")
+        return convert_id(patient)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
             raise HTTPException(status_code=404, detail="Patient not found")
         return convert_id(patient)
     except Exception as e:
