@@ -67,8 +67,3 @@ def get_patient_by_identifier(system: str, value: str):
         return convert_id(patient)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-            raise HTTPException(status_code=404, detail="Patient not found")
-        return convert_id(patient)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
