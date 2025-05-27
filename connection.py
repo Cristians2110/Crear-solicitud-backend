@@ -3,8 +3,8 @@ from pymongo.server_api import ServerApi
 
 
 def connect_to_mongodb(db_name, collection_name):
-    uri = "mongodb+srv://mardugo:$Hola123.@sampleinformationservic.t2yog.mongodb.net/?retryWrites=true&w=majority&appName=SampleInformationService"
+    uri = "mongodb+srv://christians210:ALEX123@cluster0.174y8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
     client = MongoClient(uri, server_api=ServerApi('1'))
-    db = client[db_name]
-    collection = db[collection_name]
+    db = client[RIS-FINAL]
+    collection = db[solicitud]
     return collection
